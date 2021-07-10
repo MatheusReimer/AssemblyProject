@@ -1,0 +1,49 @@
+DEPTH = 256;	% Number of positions	%
+WIDTH = 32;	% Position size  	%
+
+ADDRESS_RADIX = HEX;
+DATA_RADIX    = HEX;
+
+CONTENT
+  BEGIN
+% The following addresses considers an offset that equals 0x04000020. In other
+  words, the first position (0x00000000) points to 0x04000020, an so on. %
+	00000000 : 08100003;  % j main   		%
+	00000001 : 01095820;  % add $t3,$s0,$s1 	%
+	00000002 : 03e00008;  % jr $ra  		%
+	00000003 : 20080009;  % addi $t0, $zero,9  	%
+	00000004 : 20090009;  % addi $t1, $zero,9   	%
+	00000005 : 0c100001;  % jal somador_de_dois  	%
+	00000006 : 20040000;  % addi $a0,$zero,0   	%
+	00000007 : 2402000a;  % li $v0,10   	%
+	00000008 : 0000000c;  % syscall 	%
+	
+	[00000009..000000FF] : 00000000;
+   END ;	
+
+
+%------------------------------------------------------------------------------%
+% Original assembly source code:
+     .text   
+
+.text 
+
+	j main
+	
+somador_de_dois:
+	add $t3,$s0,$s1
+	
+	jr $ra
+	
+	li $v0,10
+	syscall
+main:
+	addi $t0,$zero,9
+	addi $t1,$zero 9
+	
+	jal somador_de_dois
+	
+	addi $a0,$zero,0
+
+	
+%
